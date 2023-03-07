@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -19,5 +20,7 @@ public class UserService {
     public List<User> getUsers(){
        return userRepository.findAll();
     };
+
+    public User getUserById(int id) {return userRepository.findById(id).orElse(null); }
 
 }
