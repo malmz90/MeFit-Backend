@@ -20,4 +20,8 @@ public class ProfileService {
     public Profile getProfileById(Integer id) {
         return profileRepository.findById(id).get();
     }
+
+    public Profile addProfile(Profile profile) {
+        return profileRepository.save(profile);
+    }
 }

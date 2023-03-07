@@ -7,11 +7,9 @@ import com.example.mefitbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -38,18 +36,12 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getProfileById(id));
     }
 
-/*    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        User returnUser = new User();
-        HttpStatus status;
 
-        if (userRepository.existsById(id)) {
-            status = HttpStatus.OK;
-            returnUser = userRepository.findById(id).get();
-        } else {
-            status = HttpStatus.NOT_FOUND;
-        }
-        return new ResponseEntity<>(returnUser, status);
-    }*/
+    @PostMapping()
+    public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
+        Profile addProfile = profileService.addProfile(profile);
+        URI location = URI.create("profile/" + addProfile.getId());
+        return ResponseEntity.created(location).build();
+    }
 }
 
