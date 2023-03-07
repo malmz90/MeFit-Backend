@@ -43,5 +43,13 @@ public class ProfileController {
         URI location = URI.create("profile/" + addProfile.getId());
         return ResponseEntity.created(location).build();
     }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable int id) {
+        if(id != profile.getId())
+            return ResponseEntity.badRequest().build();
+        profileService.update(profile);
+        return ResponseEntity.noContent().build();
+    }
 }
 
