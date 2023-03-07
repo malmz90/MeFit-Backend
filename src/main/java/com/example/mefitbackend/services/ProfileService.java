@@ -13,19 +13,26 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public List<Profile> getProfiles() {
+    public List<Profile> getAll() {
         return profileRepository.findAll();
     }
 
-    public Profile getProfileById(Integer id) {
+    public Profile findById(Integer id) {
         return profileRepository.findById(id).get();
     }
 
-    public Profile addProfile(Profile profile) {
+    public Profile add(Profile profile) {
         return profileRepository.save(profile);
     }
 
     public Profile update(Profile profile) {
         return profileRepository.save(profile);
+    }
+
+    public void deleteById(Integer id) {
+        if(profileRepository.existsById(id)) {
+            Profile profile = profileRepository.findById(id).get();
+            profileRepository.delete(profile);
+        }
     }
 }

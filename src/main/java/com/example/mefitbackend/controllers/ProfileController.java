@@ -28,18 +28,18 @@ public class ProfileController {
     // Get all profiles
     @GetMapping("profiles")
     public List<Profile> getProfiles() {
-        return profileService.getProfiles();
+        return profileService.getAll();
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Profile> getProfileById(@PathVariable int id) {
-        return ResponseEntity.ok(profileService.getProfileById(id));
+        return ResponseEntity.ok(profileService.findById(id));
     }
 
 
     @PostMapping()
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
-        Profile addProfile = profileService.addProfile(profile);
+        Profile addProfile = profileService.add(profile);
         URI location = URI.create("profile/" + addProfile.getId());
         return ResponseEntity.created(location).build();
     }
@@ -49,6 +49,12 @@ public class ProfileController {
         if(id != profile.getId())
             return ResponseEntity.badRequest().build();
         profileService.update(profile);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Profile> deleteProfile(@PathVariable int id) {
+        profileService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
