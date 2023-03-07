@@ -2,6 +2,7 @@ package com.example.mefitbackend.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,14 +18,14 @@ public class Program {
     private String category;
 
 
-/*    @OneToMany(mappedBy = "program")
-    List<Goal> goal;*/
+    @OneToMany(mappedBy = "program")
+    List<Goal> goal;
 
-  /*  @ManyToMany
+    @ManyToMany
     @JoinTable(
             name= "program_workout",
             joinColumns = {@JoinColumn(name = "program_id")},
             inverseJoinColumns = {@JoinColumn(name = "workout_id")}
     )
-    public List<Workout> workouts = new ArrayList<>();*/
+    public List<Workout> workouts = new ArrayList<>();
 }

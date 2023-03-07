@@ -24,7 +24,7 @@ public class Exercise {
     @Column(name = "lower_body")
     private String lowerBody;
 
-/*    @ManyToMany
+   @ManyToMany
     @JoinTable(
             name = "workout_exercise",
             joinColumns = {@JoinColumn(name = "exercise_id")},
@@ -38,7 +38,7 @@ public class Exercise {
             joinColumns = {@JoinColumn(name = "exercise_id")},
             inverseJoinColumns = {@JoinColumn(name = "set_id")}
     )
-    public List<Set> sets = new ArrayList<>();*/
+    public List<Set> sets = new ArrayList<>();
 
 
 }

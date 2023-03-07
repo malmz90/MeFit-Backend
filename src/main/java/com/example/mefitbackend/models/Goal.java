@@ -18,15 +18,15 @@ public class Goal {
     @Column(name = "achieved")
     private boolean achieved;
 
-  /*  @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "program_id")
-    private Program program;*/
+    private Program program;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "profile_id")
-    private Profile profile;*/
+    private Profile profile;
 
-    /*@OneToMany(mappedBy = "workout")
+  /*  @OneToMany(mappedBy = "workout")
     List<WorkoutComplete> workoutsCompleted;
     */
 

@@ -2,6 +2,8 @@ package com.example.mefitbackend.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Profile {
 
@@ -28,8 +30,8 @@ public class Profile {
     private Address address;*/
 
 
-  /*  @OneToMany(mappedBy = "profile")
-    List<Goal> goals;*/
+   @OneToMany(mappedBy = "profile")
+   List<Goal> goals;
 
 
 
