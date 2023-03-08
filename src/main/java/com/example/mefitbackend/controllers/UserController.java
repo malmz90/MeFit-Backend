@@ -52,20 +52,21 @@ public class UserController {
         return new ResponseEntity<>(user, httpStatus);
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
 
-
-/*    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        User returnUser = new User();
-        HttpStatus status;
-
-        if (userRepository.existsById(id)) {
-            status = HttpStatus.OK;
-            returnUser = userRepository.findById(id).get();
-        } else {
-            status = HttpStatus.NOT_FOUND;
+        if(id != user.getUser_id()) {
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(returnUser, status);
-    }*/
+        userService.updateUser(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}") // DELETE: localhost:8080/api/v1/movies/1
+    public ResponseEntity<User> delete(@PathVariable int id) {
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
