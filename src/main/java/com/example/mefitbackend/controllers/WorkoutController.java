@@ -1,38 +1,36 @@
 package com.example.mefitbackend.controllers;
 
+import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.User;
-import com.example.mefitbackend.repositories.UserRepository;
-import com.example.mefitbackend.services.UserService;
+import com.example.mefitbackend.models.Workout;
+import com.example.mefitbackend.services.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/users")
-public class UserController {
-
+@RequestMapping("api/v1/workouts")
+public class WorkoutController {
     @Autowired
-    private UserService userService;
+    WorkoutService workoutService;
     private HttpStatus httpStatus;
 
     @GetMapping()
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<Workout> getProfiles() {
+        return workoutService.getWorkouts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
+    public ResponseEntity<Workout> getUser(@PathVariable int id) {
         HttpStatus status;
-        User user = userService.getUserById(id);
+        Workout workout = workoutService.getWorkoutById(id);
 
-        if (user != null) {
+        if (workout != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(user, status);
+            return new ResponseEntity<>(workout, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
@@ -40,33 +38,32 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> add(@RequestBody User user) {
+    public ResponseEntity<Workout> add(@RequestBody Workout workout) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
-            user = userService.saveUser(user);
+            workout = workoutService.saveWorkout(workout);
             httpStatus = HttpStatus.CREATED;
         } catch (Exception e) {
             httpStatus = HttpStatus.BAD_REQUEST;
         }
 
-        return new ResponseEntity<>(user, httpStatus);
+        return new ResponseEntity<>(workout, httpStatus);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Workout workout) {
 
-        if(id != user.getUser_id()) {
+        if(id != workout.getWorkout_id()) {
             return ResponseEntity.badRequest().build();
         }
-        userService.updateUser(user);
+       workoutService.updateWorkout(workout);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<User> delete(@PathVariable int id) {
-        userService.deleteById(id);
+    public ResponseEntity<Workout> delete(@PathVariable int id) {
+        workoutService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
 }
-
