@@ -40,13 +40,13 @@ public class ProfileController {
     @PostMapping()
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
         Profile addProfile = profileService.add(profile);
-        URI location = URI.create("profile/" + addProfile.getId());
+        URI location = URI.create("profile/" + addProfile.getProfile_id());
         return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable int id) {
-        if(id != profile.getId())
+        if(id != profile.getProfile_id())
             return ResponseEntity.badRequest().build();
         profileService.update(profile);
         return ResponseEntity.noContent().build();

@@ -9,8 +9,8 @@ import java.util.List;
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long exercise_id;
 
     @Column
     private String name;

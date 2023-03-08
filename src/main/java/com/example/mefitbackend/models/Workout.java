@@ -8,8 +8,8 @@ import java.util.List;
 @Entity
 public class Workout {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int workout_id;
     @Column
     private String name;
     @Column

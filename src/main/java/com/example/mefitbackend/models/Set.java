@@ -8,8 +8,8 @@ import java.util.List;
 @Entity
 public class Set {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int set_id;
     @Column(name = "exercise_repetitions")
     private String exerciseRepetitions;
 

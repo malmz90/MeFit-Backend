@@ -8,8 +8,8 @@ import java.util.List;
 @Entity
 public class Program {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long program_id;
 
     @Column
     private String name;

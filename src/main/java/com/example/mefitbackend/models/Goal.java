@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Entity
 public class Goal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long goal_id;
 
     @Column(name = "start_date")
     private String startDate;
