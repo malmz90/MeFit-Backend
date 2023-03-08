@@ -18,7 +18,7 @@ public class ProfileService {
     }
 
     public Profile findById(Integer id) {
-        return profileRepository.findById(id).get();
+        return profileRepository.findById(id).orElse(null);
     }
 
     public Profile add(Profile profile) {
@@ -26,7 +26,7 @@ public class ProfileService {
     }
 
     public Profile update(Profile profile) {
-        return profileRepository.save(profile);
+      return profileRepository.save(profile);
     }
 
     public void deleteById(Integer id) {
