@@ -1,16 +1,14 @@
 package com.example.mefitbackend.controllers;
 
 import com.example.mefitbackend.models.User;
-import com.example.mefitbackend.repositories.UserRepository;
 import com.example.mefitbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("api/v1/users")

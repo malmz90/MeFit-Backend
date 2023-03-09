@@ -22,6 +22,10 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    //SWAGGER
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.0.3'
 }
 
 tasks.named('test') {
