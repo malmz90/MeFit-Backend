@@ -13,19 +13,19 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public List<Profile> getAll() {
+    public List<Profile> getProfiles() {
         return profileRepository.findAll();
     }
 
-    public Profile findById(Integer id) {
+    public Profile getProfileById(Integer id) {
         return profileRepository.findById(id).orElse(null);
     }
 
-    public Profile add(Profile profile) {
+    public Profile saveProfile(Profile profile) {
         return profileRepository.save(profile);
     }
 
-    public Profile update(Profile profile) {
+    public Profile updateProfile(Profile profile) {
       return profileRepository.save(profile);
     }
 

@@ -13,19 +13,19 @@ public class GoalService {
     @Autowired
     private GoalRepository goalRepository;
 
-    public List<Goal> getAll() {
+    public List<Goal> getGoals() {
        return goalRepository.findAll();
     }
 
-    public Goal findById(Integer id) {
+    public Goal findGoalById(Integer id) {
         return goalRepository.findById(id).orElse(null);
     }
 
-    public Goal add(Goal goal) {
+    public Goal saveGoal(Goal goal) {
         return goalRepository.save(goal);
     }
 
-    public Goal update(Goal goal) { return goalRepository.save(goal); }
+    public Goal updateGoal(Goal goal) { return goalRepository.save(goal); }
 
     public void deleteById(Integer id) {
         if(goalRepository.existsById(id)) {

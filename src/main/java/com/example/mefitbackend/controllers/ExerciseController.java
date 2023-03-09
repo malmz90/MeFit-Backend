@@ -5,6 +5,10 @@ import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.services.ExerciseService;
 import com.example.mefitbackend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +31,15 @@ public class ExerciseController {
     }
 
     @Operation(summary = "Get exercise by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Success",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class)) }),
+            @ApiResponse(responseCode = "404",
+                    description = "Exercise does not exist with supplied ID",
+                    content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> getUser(@PathVariable int id) {
         HttpStatus status;

@@ -1,10 +1,15 @@
 package com.example.mefitbackend.controllers;
 
+import com.example.mefitbackend.models.Exercise;
 import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.repositories.UserRepository;
 import com.example.mefitbackend.services.ProfileService;
 import com.example.mefitbackend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +24,7 @@ public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
+    private HttpStatus httpStatus;
 
     /**
      * Get all Profiles.
@@ -29,21 +35,45 @@ public class ProfileController {
     @Operation(summary = "Get all profiles")
     @GetMapping("profiles")
     public List<Profile> getProfiles() {
-        return profileService.getAll();
+        return profileService.getProfiles();
     }
 
     @Operation(summary = "Get profile by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Success",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile.class)) }),
+            @ApiResponse(responseCode = "404",
+                    description = "Profile does not exist with supplied ID",
+                    content = @Content)
+    })
     @GetMapping("{id}")
     public ResponseEntity<Profile> getProfileById(@PathVariable int id) {
-        return ResponseEntity.ok(profileService.findById(id));
+        HttpStatus status;
+        Profile profile = profileService.getProfileById(id);
+
+        if(profile != null) {
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(profile, status);
+        } else {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
+
     }
 
     @Operation(summary = "Create a new profile")
     @PostMapping()
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
-        Profile addProfile = profileService.add(profile);
-        URI location = URI.create("profile/" + addProfile.getProfile_id());
-        return ResponseEntity.created(location).build();
+        httpStatus = HttpStatus.FORBIDDEN;
+        try {
+            profile = profileService.saveProfile(profile);
+            httpStatus = HttpStatus.CREATED;
+        } catch (Exception e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<>(profile, httpStatus);
     }
 
     @Operation(summary = "Updating an existing profile by ID")
@@ -51,7 +81,7 @@ public class ProfileController {
     public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable int id) {
         if(id != profile.getProfile_id())
             return ResponseEntity.badRequest().build();
-        profileService.update(profile);
+        profileService.updateProfile(profile);
         return ResponseEntity.noContent().build();
     }
 
