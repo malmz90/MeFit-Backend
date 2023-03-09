@@ -36,7 +36,6 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.findById(id));
     }
 
-
     @PostMapping()
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
         Profile addProfile = profileService.add(profile);

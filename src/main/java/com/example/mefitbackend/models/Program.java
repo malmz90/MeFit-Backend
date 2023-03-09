@@ -1,5 +1,6 @@
 package com.example.mefitbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -27,5 +28,6 @@ public class Program {
             joinColumns = {@JoinColumn(name = "program_id")},
             inverseJoinColumns = {@JoinColumn(name = "workout_id")}
     )
+    @JsonIgnore
     public List<Workout> workouts = new ArrayList<>();
 }
