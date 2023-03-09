@@ -1,11 +1,16 @@
 package com.example.mefitbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Exercise {
 
     @Id
@@ -30,6 +35,7 @@ public class Exercise {
             joinColumns = {@JoinColumn(name = "exercise_id")},
             inverseJoinColumns = {@JoinColumn(name= "workout_id")}
     )
+   @JsonIgnore
     public List<Workout> workouts = new ArrayList<>();
 
     @ManyToMany
@@ -38,6 +44,7 @@ public class Exercise {
             joinColumns = {@JoinColumn(name = "exercise_id")},
             inverseJoinColumns = {@JoinColumn(name = "set_id")}
     )
+    @JsonIgnore
     public List<Set> sets = new ArrayList<>();
 
 
