@@ -62,7 +62,7 @@ public class UserController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Profile.class)) }),
             @ApiResponse(responseCode = "400",
-                    description = "Could not create user",
+                    description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Not Authorized",
@@ -82,6 +82,17 @@ public class UserController {
     }
 
     @Operation(summary = "Update an existing user by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204",
+                    description = "User successfully updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Malformed request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "User not found with supplied ID",
+                    content = @Content)
+    })
     @PatchMapping("{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
 

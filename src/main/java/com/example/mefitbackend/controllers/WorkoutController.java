@@ -61,7 +61,7 @@ public class WorkoutController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Profile.class)) }),
             @ApiResponse(responseCode = "400",
-                    description = "Could not create workout",
+                    description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Not Authorized",
@@ -81,6 +81,17 @@ public class WorkoutController {
     }
 
     @Operation(summary = "Update an existing workout by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Workout successfully updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Malformed request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Workout not found with supplied ID",
+                    content = @Content)
+    })
     @PatchMapping("{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Workout workout) {
 

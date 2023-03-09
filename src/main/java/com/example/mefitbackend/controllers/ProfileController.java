@@ -70,7 +70,7 @@ public class ProfileController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Profile.class)) }),
             @ApiResponse(responseCode = "400",
-                    description = "Could not create profile",
+                    description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Not Authorized",
@@ -89,6 +89,17 @@ public class ProfileController {
     }
 
     @Operation(summary = "Updating an existing profile by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Profile successfully updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Malformed request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Profile not found with supplied ID",
+                    content = @Content)
+    })
     @PatchMapping("{id}")
     public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable int id) {
         if(id != profile.getProfile_id())

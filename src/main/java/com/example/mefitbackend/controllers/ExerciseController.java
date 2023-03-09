@@ -61,7 +61,7 @@ public class ExerciseController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Exercise.class)) }),
             @ApiResponse(responseCode = "400",
-                    description = "Could not create exercise",
+                    description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Not Authorized",
@@ -80,6 +80,17 @@ public class ExerciseController {
     }
 
     @Operation(summary = "Update an existing exercise by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Exercise successfully updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Malformed request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Exercise not found with supplied ID",
+                    content = @Content)
+    })
     @PatchMapping("{id}")
     public ResponseEntity<Exercise> updateUser(@PathVariable int id, @RequestBody Exercise exercise) {
 

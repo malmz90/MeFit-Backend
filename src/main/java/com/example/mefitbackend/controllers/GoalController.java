@@ -64,7 +64,7 @@ public class GoalController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Goal.class)) }),
             @ApiResponse(responseCode = "400",
-                    description = "Could not create goal",
+                    description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Not Authorized",
@@ -83,6 +83,17 @@ public class GoalController {
     }
 
     @Operation(summary = "Update an existing goal by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Goal successfully updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Malformed request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Goal not found with supplied ID",
+                    content = @Content)
+    })
     @PatchMapping("{id}")
     public ResponseEntity<Goal> updateGoal(@RequestBody Goal goal, @PathVariable int id) {
         if(id != goal.getGoal_id())
