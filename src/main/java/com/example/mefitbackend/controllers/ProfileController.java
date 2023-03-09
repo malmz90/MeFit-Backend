@@ -64,6 +64,18 @@ public class ProfileController {
     }
 
     @Operation(summary = "Create a new profile")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Created profile",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile.class)) }),
+            @ApiResponse(responseCode = "400",
+                    description = "Could not create profile",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Not Authorized",
+                    content = @Content)
+    })
     @PostMapping()
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
         httpStatus = HttpStatus.FORBIDDEN;

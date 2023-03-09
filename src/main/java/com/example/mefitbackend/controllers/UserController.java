@@ -1,6 +1,7 @@
 package com.example.mefitbackend.controllers;
 
 import com.example.mefitbackend.models.Exercise;
+import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,18 @@ public class UserController {
     }
 
     @Operation(summary = "Create a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Created user",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile.class)) }),
+            @ApiResponse(responseCode = "400",
+                    description = "Could not create user",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Not Authorized",
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<User> add(@RequestBody User user) {
         httpStatus = HttpStatus.FORBIDDEN;

@@ -58,6 +58,18 @@ public class GoalController {
 
     // NEEDS TO BE FIXED WITH DTO?!!!
     @Operation(summary = "Create a new goal")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Created goal",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Goal.class)) }),
+            @ApiResponse(responseCode = "400",
+                    description = "Could not create goal",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Not Authorized",
+                    content = @Content)
+    })
     @PostMapping()
     public ResponseEntity<Goal> addGoal(@RequestBody Goal goal) {
         httpStatus = HttpStatus.FORBIDDEN;

@@ -55,6 +55,18 @@ public class ExerciseController {
     }
 
     @Operation(summary = "Create a new exercise")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Created exercise",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class)) }),
+            @ApiResponse(responseCode = "400",
+                    description = "Could not create exercise",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Not Authorized",
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<Exercise> add(@RequestBody Exercise exercise) {
         httpStatus = HttpStatus.FORBIDDEN;
@@ -64,7 +76,6 @@ public class ExerciseController {
         } catch (Exception e) {
             httpStatus = HttpStatus.BAD_REQUEST;
         }
-
         return new ResponseEntity<>(exercise, httpStatus);
     }
 

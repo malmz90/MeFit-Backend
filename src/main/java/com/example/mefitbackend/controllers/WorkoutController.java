@@ -55,6 +55,18 @@ public class WorkoutController {
     }
 
     @Operation(summary = "Create a new workout")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Created workout",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile.class)) }),
+            @ApiResponse(responseCode = "400",
+                    description = "Could not create workout",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Not Authorized",
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<Workout> add(@RequestBody Workout workout) {
         httpStatus = HttpStatus.FORBIDDEN;
