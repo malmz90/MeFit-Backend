@@ -2,6 +2,7 @@ package com.example.mefitbackend.controllers;
 
 import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,13 @@ public class UserController {
     private UserService userService;
     private HttpStatus httpStatus;
 
+    @Operation(summary = "Get all users")
     @GetMapping()
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    @Operation(summary = "Get user by ID")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable int id) {
         HttpStatus status;
@@ -37,6 +40,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Create a new user")
     @PostMapping
     public ResponseEntity<User> add(@RequestBody User user) {
         httpStatus = HttpStatus.FORBIDDEN;
@@ -50,6 +54,7 @@ public class UserController {
         return new ResponseEntity<>(user, httpStatus);
     }
 
+    @Operation(summary = "Update an existing user by ID")
     @PatchMapping("{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
 
@@ -60,6 +65,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Delete an user by ID")
     @DeleteMapping("{id}")
     public ResponseEntity<User> delete(@PathVariable int id) {
         userService.deleteById(id);
