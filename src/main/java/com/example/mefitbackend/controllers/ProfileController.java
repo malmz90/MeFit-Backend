@@ -1,10 +1,9 @@
 package com.example.mefitbackend.controllers;
 
-import com.example.mefitbackend.models.Exercise;
+import com.example.mefitbackend.dto.ProfileDTO;
+import com.example.mefitbackend.mappers.ProfileMapper;
 import com.example.mefitbackend.models.Profile;
-import com.example.mefitbackend.repositories.UserRepository;
 import com.example.mefitbackend.services.ProfileService;
-import com.example.mefitbackend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,6 +22,9 @@ public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    private ProfileMapper profileMapper;
+
     private HttpStatus httpStatus;
 
     /**
@@ -49,13 +50,13 @@ public class ProfileController {
                     content = @Content)
     })
     @GetMapping("{id}")
-    public ResponseEntity<Profile> getProfileById(@PathVariable int id) {
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable int id) {
+        ProfileDTO profileDTO = profileMapper.toProfileDto(profileService.getProfileById(id));
         HttpStatus status;
-        Profile profile = profileService.getProfileById(id);
 
-        if(profile != null) {
+        if(profileDTO != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(profile, status);
+            return new ResponseEntity<>(profileDTO, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);

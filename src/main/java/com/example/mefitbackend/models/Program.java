@@ -2,11 +2,15 @@ package com.example.mefitbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Program {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,7 @@ public class Program {
 
 
     @OneToMany(mappedBy = "program")
+    @JsonIgnore
     List<Goal> goal;
 
     @ManyToMany
