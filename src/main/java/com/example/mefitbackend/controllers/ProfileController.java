@@ -1,6 +1,6 @@
 package com.example.mefitbackend.controllers;
 
-import com.example.mefitbackend.dto.ProfileDTO;
+import com.example.mefitbackend.dto.ProfileGetDTO;
 import com.example.mefitbackend.mappers.ProfileMapper;
 import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.services.ProfileService;
@@ -50,13 +50,13 @@ public class ProfileController {
                     content = @Content)
     })
     @GetMapping("{id}")
-    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable int id) {
-        ProfileDTO profileDTO = profileMapper.toProfileDto(profileService.getProfileById(id));
+    public ResponseEntity<ProfileGetDTO> getProfileById(@PathVariable int id) {
+        ProfileGetDTO profileGetDTO = profileMapper.toProfileDto(profileService.getProfileById(id));
         HttpStatus status;
 
-        if(profileDTO != null) {
+        if(profileGetDTO != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(profileDTO, status);
+            return new ResponseEntity<>(profileGetDTO, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);

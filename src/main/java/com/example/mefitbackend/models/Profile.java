@@ -36,7 +36,7 @@ public class Profile {
 
 
    @OneToMany(mappedBy = "profile")
-   @JsonIgnore
+
    List<Goal> goals;
 
 
