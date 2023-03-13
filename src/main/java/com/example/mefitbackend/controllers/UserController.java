@@ -1,6 +1,8 @@
 package com.example.mefitbackend.controllers;
 
-import com.example.mefitbackend.models.Exercise;
+import com.example.mefitbackend.dto.UserGetDTO;
+import com.example.mefitbackend.dto.UserPostDTO;
+import com.example.mefitbackend.mappers.UserMapper;
 import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.services.UserService;
@@ -23,6 +25,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all users")
@@ -42,9 +46,9 @@ public class UserController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
+    public ResponseEntity<UserGetDTO> getUser(@PathVariable int id) {
         HttpStatus status;
-        User user = userService.getUserById(id);
+        UserGetDTO user = userMapper.userToUserGetDTO(userService.getUserById(id));
 
         if (user != null) {
             status = HttpStatus.OK;
@@ -69,16 +73,17 @@ public class UserController {
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<User> add(@RequestBody User user) {
+    public ResponseEntity<User> add(@RequestBody UserPostDTO userPostDTO) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
+            User user = userMapper.userPostDTOtoUser(userPostDTO);
             user = userService.saveUser(user);
             httpStatus = HttpStatus.CREATED;
+            return new ResponseEntity<>(user, httpStatus);
         } catch (Exception e) {
             httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, httpStatus);
         }
-
-        return new ResponseEntity<>(user, httpStatus);
     }
 
     @Operation(summary = "Update an existing user by ID")
@@ -94,13 +99,16 @@ public class UserController {
                     content = @Content)
     })
     @PatchMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
-
-        if(id != user.getUser_id()) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<UserGetDTO> updateUser(@PathVariable int id, @RequestBody UserPostDTO userPostDTO) {
+        User existingUser = userService.getUserById(id);
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
         }
-        userService.updateUser(user);
-        return ResponseEntity.noContent().build();
+        User updatedUser = userMapper.userPostDTOtoUser(userPostDTO);
+        updatedUser.setUser_id(id);
+        updatedUser = userService.updateUser(updatedUser);
+        UserGetDTO updatedUserDTO = userMapper.userToUserGetDTO(updatedUser);
+        return ResponseEntity.ok(updatedUserDTO);
     }
 
     @Operation(summary = "Delete an user by ID")

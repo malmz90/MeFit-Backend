@@ -26,6 +26,7 @@ public class ProfileDTO {
     private User user;
     private List<Goal> goals;
 
+
     public Long getProfile_id() {
         return profile_id;
     }

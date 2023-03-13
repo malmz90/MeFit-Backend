@@ -17,9 +17,10 @@ public class User {
     @Column private String username;
     @Column
     private String password;
-    @Column
+    @Column(name = "is_contributor")
     private Boolean isContributor;
-    @Column
+
+    @Column(name = "is_admin")
     private Boolean isAdmin;
 
 
