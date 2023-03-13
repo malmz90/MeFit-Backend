@@ -23,7 +23,7 @@ public class ProfileDTO {
 
     private String disabilities;
 
-    private User user;
+    private int user;
     private List<Goal> goals;
 
 
@@ -67,11 +67,11 @@ public class ProfileDTO {
         this.disabilities = disabilities;
     }
 
-    public User getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(int user) {
         this.user = user;
     }
 
