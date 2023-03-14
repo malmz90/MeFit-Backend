@@ -14,9 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -116,6 +120,20 @@ public class UserController {
     public ResponseEntity<User> delete(@PathVariable int id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //Keycloak
+    //TODO add registered user from keycloak to db
+    @GetMapping ("info")
+    public ResponseEntity getLoggerInUserInfo(@AuthenticationPrincipal Jwt principal){
+        Map<String,String> map = new HashMap<>();
+        map.put("subject", principal.getClaimAsString("sub"));
+        map.put("user_name", principal.getClaimAsString("preferred_username"));
+        map.put("email", principal.getClaimAsString("email"));
+        map.put("first_name", principal.getClaimAsString("given_name"));
+        map.put("last_name", principal.getClaimAsString("family_name"));
+        map.put("roles", String.valueOf(principal.getClaimAsStringList("roles")));
+        return ResponseEntity.ok(map);
     }
 
 }
