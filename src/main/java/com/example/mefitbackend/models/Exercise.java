@@ -23,11 +23,6 @@ public class Exercise {
     @Column
     private String description;
 
-    @Column(name = "upper_body")
-    private String upperBody;
-
-    @Column(name = "lower_body")
-    private String lowerBody;
 
    @ManyToMany
     @JoinTable(
