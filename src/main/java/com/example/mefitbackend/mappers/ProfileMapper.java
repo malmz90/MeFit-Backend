@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public interface ProfileMapper {
 
     @Mapping(target = "user", source ="user.user_id")
-    @Mapping(target ="goals", source="goals", qualifiedByName = "goalsToIds")
+    @Mapping(target ="goals_id", source="goals", qualifiedByName = "goalsToIds")
     ProfileGetDTO toProfileDto(Profile profile);
 
     @Named("goalsToIds")

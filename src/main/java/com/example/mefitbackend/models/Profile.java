@@ -34,11 +34,8 @@ public class Profile {
     @JoinColumn(name = "address_id")
     private Address address;*/
 
-
    @OneToMany(mappedBy = "profile")
-
    List<Goal> goals;
-
 
 
 }

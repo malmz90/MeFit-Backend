@@ -1,6 +1,7 @@
 package com.example.mefitbackend.controllers;
 
-import com.example.mefitbackend.models.Exercise;
+import com.example.mefitbackend.dto.GoalDTO;
+import com.example.mefitbackend.mappers.GoalMapper;
 import com.example.mefitbackend.models.Goal;
 import com.example.mefitbackend.services.GoalService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,6 +22,8 @@ public class GoalController {
 
     @Autowired
     private GoalService goalService;
+    @Autowired
+    private GoalMapper goalMapper;
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all goals")
@@ -41,18 +43,18 @@ public class GoalController {
                     content = @Content)
     })
     @GetMapping("{id}")
-    public ResponseEntity<Goal> getGoalById(@PathVariable int id) {
+    public ResponseEntity<GoalDTO> getGoalById(@PathVariable int id) {
         HttpStatus status;
         Goal goal = goalService.findGoalById(id);
 
         if (goal != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(goal, status);
+            GoalDTO goalDto = goalMapper.toGoalDto(goal);
+            return new ResponseEntity<>(goalDto, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
         }
-
     }
 
 
@@ -71,15 +73,24 @@ public class GoalController {
                     content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<Goal> addGoal(@RequestBody Goal goal) {
-        httpStatus = HttpStatus.FORBIDDEN;
-        try {
-            goal = goalService.saveGoal(goal);
-            httpStatus = HttpStatus.CREATED;
-        } catch (Exception e) {
-            httpStatus = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<GoalDTO> addGoal(@RequestBody GoalDTO goalDto) {
+        HttpStatus status;
+        Goal goal = goalMapper.toGoal(goalDto);
+
+        if (goal != null) {
+            try {
+                goal = goalService.saveGoal(goal);
+                status = HttpStatus.CREATED;
+                GoalDTO responseDto = goalMapper.toGoalDto(goal);
+                return new ResponseEntity<>(responseDto, status);
+            } catch (Exception e) {
+                status = HttpStatus.BAD_REQUEST;
+            }
+        } else {
+            status = HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<>(goal, httpStatus);
+
+        return new ResponseEntity<>(null, status);
     }
 
     @Operation(summary = "Update an existing goal by ID")

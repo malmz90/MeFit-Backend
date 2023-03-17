@@ -22,7 +22,7 @@ public class ProfileGetDTO {
     private String disabilities;
 
     private int user;
-    private List<Long> goals;
+    private List<Long> goals_id;
 
 
     public Long getProfile_id() {
@@ -74,11 +74,11 @@ public class ProfileGetDTO {
     }
 
 
-    public List<Long> getGoals() {
-        return goals;
+    public List<Long> getGoals_id() {
+        return goals_id;
     }
 
-    public void setGoals(List<Long> goals) {
-        this.goals = goals;
+    public void setGoals_id(List<Long> goals_id) {
+        this.goals_id = goals_id;
     }
 }
