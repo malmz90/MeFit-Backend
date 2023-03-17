@@ -16,7 +16,7 @@ public class User {
 
     @Column private String username;
 
-    @Column(name = "keycloak_id")
+    @Column(name = "keycloak_id",unique=true)
     private String keyCloakId;
     @Column(name = "is_contributor")
     private Boolean isContributor;
