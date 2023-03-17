@@ -17,7 +17,7 @@ public class User {
     @Column private String username;
 
     @Column(name = "keycloak_id")
-    private String keycloakId;
+    private String keyCloakId;
     @Column(name = "is_contributor")
     private Boolean isContributor;
 

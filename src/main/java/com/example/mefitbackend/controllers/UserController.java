@@ -24,6 +24,7 @@ import java.util.Map;
 
 
 @RestController
+@CrossOrigin("http://localhost:3000/")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -51,9 +52,25 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<UserGetDTO> getUser(@PathVariable int id) {
+        System.out.println("test" + id);
         HttpStatus status;
         UserGetDTO user = userMapper.userToUserGetDTO(userService.getUserById(id));
 
+        if (user != null) {
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(user, status);
+        } else {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
+    }
+
+    @GetMapping("/keycloak")
+    public ResponseEntity<UserGetDTO> findUserByKeyCloakId(@AuthenticationPrincipal Jwt principal) {
+        System.out.println("yolo");
+        String keycloakId = principal.getClaimAsString("sub");
+        HttpStatus status;
+        UserGetDTO user = userMapper.userToUserGetDTO(userService.getUserByKeyCloakId(keycloakId));
         if (user != null) {
             status = HttpStatus.OK;
             return new ResponseEntity<>(user, status);
@@ -83,7 +100,7 @@ public class UserController {
         try {
             UserPostDTO userPostDTO = new UserPostDTO();
             userPostDTO.setUsername(principal.getClaimAsString("preferred_username"));
-            userPostDTO.setKeycloakId(principal.getClaimAsString("sub"));
+            userPostDTO.setKeyCloakId(principal.getClaimAsString("sub"));
 
             List<String> roles = principal.getClaimAsStringList("roles");
             userPostDTO.setAdmin(roles.contains("admin"));

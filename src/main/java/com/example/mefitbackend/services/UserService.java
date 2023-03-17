@@ -23,6 +23,9 @@ public class UserService {
 
     public User getUserById(int id) {return userRepository.findById(id).orElse(null); }
 
+    public User getUserByKeyCloakId(String keycloakId) {
+        return userRepository.findByKeyCloakId(keycloakId).orElse(null);
+    }
 
     public User updateUser(User user) {
         return userRepository.save(user);
