@@ -2,17 +2,21 @@ package com.example.mefitbackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+
         http
                 .cors().and()
                 // Sessions will not be used
@@ -21,9 +25,10 @@ public class SecurityConfig {
                 .csrf().disable()
                 // Enable security for http requests
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/resources/public").permitAll()
+                       //    .requestMatchers("/api/v1/resources/public").permitAll()
                        // .requestMatchers("/api/v1/resources/roles").hasRole("admin")
-                        //.requestMatchers("/api/v1/resources/authorized/offline").hasRole("offline_access")
+                       // .requestMatchers("/api/v1/resources/authorized").hasAuthority("SCOPE_profile")
+                        .requestMatchers("/api/v1/resources/authorized/offline").hasRole("contributor")
                         // All endpoints are protected
                         .anyRequest().authenticated()
                 )

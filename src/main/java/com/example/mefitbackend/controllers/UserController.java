@@ -76,7 +76,30 @@ public class UserController {
                     description = "Not Authorized",
                     content = @Content)
     })
-    @PostMapping
+
+    @PostMapping()
+    public ResponseEntity<User> add(@AuthenticationPrincipal Jwt principal) {
+        httpStatus = HttpStatus.FORBIDDEN;
+        try {
+            UserPostDTO userPostDTO = new UserPostDTO();
+            userPostDTO.setUsername(principal.getClaimAsString("preferred_username"));
+            userPostDTO.setKeycloakId(principal.getClaimAsString("sub"));
+
+            List<String> roles = principal.getClaimAsStringList("roles");
+            userPostDTO.setAdmin(roles.contains("admin"));
+            userPostDTO.setContributor((roles.contains("contributor")));
+
+            User user = userMapper.userPostDTOtoUser(userPostDTO);
+            user = userService.saveUser(user);
+            httpStatus = HttpStatus.CREATED;
+            return new ResponseEntity<>(user, httpStatus);
+        } catch (Exception e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, httpStatus);
+        }
+    }
+
+ /*   @PostMapping
     public ResponseEntity<User> add(@RequestBody UserPostDTO userPostDTO) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
@@ -88,7 +111,7 @@ public class UserController {
             httpStatus = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, httpStatus);
         }
-    }
+    }*/
 
     @Operation(summary = "Update an existing user by ID")
     @ApiResponses( value = {
@@ -122,19 +145,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    //Keycloak
-    //TODO add registered user from keycloak to db
-    @GetMapping ("info")
-    public ResponseEntity getLoggerInUserInfo(@AuthenticationPrincipal Jwt principal){
-        Map<String,String> map = new HashMap<>();
-        map.put("subject", principal.getClaimAsString("sub"));
-        map.put("user_name", principal.getClaimAsString("preferred_username"));
-        map.put("email", principal.getClaimAsString("email"));
-        map.put("first_name", principal.getClaimAsString("given_name"));
-        map.put("last_name", principal.getClaimAsString("family_name"));
-        map.put("roles", String.valueOf(principal.getClaimAsStringList("roles")));
-        return ResponseEntity.ok(map);
-    }
+
 
 }
 
