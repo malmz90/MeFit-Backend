@@ -24,7 +24,7 @@ import java.util.Map;
 
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -52,7 +52,6 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<UserGetDTO> getUser(@PathVariable int id) {
-        System.out.println("test" + id);
         HttpStatus status;
         UserGetDTO user = userMapper.userToUserGetDTO(userService.getUserById(id));
 
@@ -65,15 +64,25 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get user by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Success",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)) }),
+            @ApiResponse(responseCode = "404",
+                    description = "User does not exist with supplied ID",
+                    content = @Content)
+    })
     @GetMapping("/keycloak")
     public ResponseEntity<UserGetDTO> findUserByKeyCloakId(@AuthenticationPrincipal Jwt principal) {
-        System.out.println("yolo");
         String keycloakId = principal.getClaimAsString("sub");
         HttpStatus status;
-        UserGetDTO user = userMapper.userToUserGetDTO(userService.getUserByKeyCloakId(keycloakId));
+        User user = userService.getUserByKeyCloakId(keycloakId);
         if (user != null) {
+            UserGetDTO userGetDTO = userMapper.userToUserGetDTO(user);
             status = HttpStatus.OK;
-            return new ResponseEntity<>(user, status);
+            return new ResponseEntity<>(userGetDTO, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
