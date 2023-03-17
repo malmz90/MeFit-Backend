@@ -1,5 +1,5 @@
-INSERT INTO "user" ( is_admin, is_contributor,password,username) VALUES (TRUE,FALSE,'123','Malmz');
-INSERT INTO "user" ( is_admin, is_contributor,password,username) VALUES (FALSE,FALSE,'123','Bert');
+INSERT INTO "user" ( is_admin, is_contributor,username) VALUES (TRUE,FALSE,'Malmz');
+INSERT INTO "user" ( is_admin, is_contributor,username) VALUES (FALSE,FALSE,'Bert');
 
 INSERT INTO profile (disabilities,height,medical_conditions,weight,user_id) VALUES ('one_leg',160,'none',50,1);
 INSERT INTO profile (disabilities,height,medical_conditions,weight,user_id) VALUES ('none',192,'none',88,2);
