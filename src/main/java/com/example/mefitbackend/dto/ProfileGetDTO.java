@@ -12,19 +12,12 @@ import java.util.List;
 public class ProfileGetDTO {
 
     private Long profile_id;
-
     private int weight;
-
     private int height;
-
     private String medicalConditions;
-
     private String disabilities;
-
     private int user;
-    private List<Long> goals_id;
-
-
+    private List<GoalDTO> goals;
     public Long getProfile_id() {
         return profile_id;
     }
@@ -73,12 +66,11 @@ public class ProfileGetDTO {
         this.user = user;
     }
 
-
-    public List<Long> getGoals_id() {
-        return goals_id;
+    public List<GoalDTO> getGoals() {
+        return goals;
     }
 
-    public void setGoals_id(List<Long> goals_id) {
-        this.goals_id = goals_id;
+    public void setGoals(List<GoalDTO> goals) {
+        this.goals = goals;
     }
 }

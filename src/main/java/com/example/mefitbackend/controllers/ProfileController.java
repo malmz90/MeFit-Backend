@@ -51,17 +51,17 @@ public class ProfileController {
     })
     @GetMapping("{id}")
     public ResponseEntity<ProfileGetDTO> getProfileById(@PathVariable int id) {
-        ProfileGetDTO profileGetDTO = profileMapper.toProfileDto(profileService.getProfileById(id));
+        Profile profile = profileService.getProfileById(id);
         HttpStatus status;
 
-        if(profileGetDTO != null) {
+        if (profile != null) {
             status = HttpStatus.OK;
+            ProfileGetDTO profileGetDTO = profileMapper.toProfileDto(profile);
             return new ResponseEntity<>(profileGetDTO, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
         }
-
     }
 
     @Operation(summary = "Create a new profile")
