@@ -35,7 +35,7 @@ public class Workout {
             joinColumns = {@JoinColumn(name = "workout_id")},
             inverseJoinColumns = {@JoinColumn(name = "exercise_id")}
     )
-    @JsonIgnore
+
     public List<Exercise> exercises = new ArrayList<>();
 /* @OneToMany(mappedBy = "workout")
  List<WorkoutComplete> workoutsCompleted;*/

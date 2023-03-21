@@ -7,6 +7,26 @@ public class UserGetDTO {
     private int user_id;
     private String username;
 
+    public Boolean getContributor() {
+        return contributor;
+    }
+
+    public void setContributor(Boolean contributor) {
+        this.contributor = contributor;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    private Boolean contributor;
+    private Boolean admin;
+
+
     public int getUser_id() {
         return user_id;
     }
@@ -22,4 +42,7 @@ public class UserGetDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
+
 }

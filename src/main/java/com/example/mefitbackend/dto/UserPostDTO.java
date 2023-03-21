@@ -6,8 +6,8 @@ import lombok.Data;
 public class UserPostDTO {
     private String username;
     private String keyCloakId;
-    private Boolean isContributor = false;
-    private Boolean isAdmin = false;
+    private Boolean contributor = false;
+    private Boolean admin = false;
 
     public String getUsername() {
         return username;
@@ -17,21 +17,6 @@ public class UserPostDTO {
         this.username = username;
     }
 
-    public Boolean getContributor() {
-        return isContributor;
-    }
-
-    public void setContributor(Boolean contributor) {
-        isContributor = contributor;
-    }
-
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
 
 
     public String getKeyCloakId() {
@@ -40,5 +25,21 @@ public class UserPostDTO {
 
     public void setKeyCloakId(String keyCloakId) {
         this.keyCloakId = keyCloakId;
+    }
+
+    public Boolean getContributor() {
+        return contributor;
+    }
+
+    public void setContributor(Boolean contributor) {
+        this.contributor = contributor;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 }

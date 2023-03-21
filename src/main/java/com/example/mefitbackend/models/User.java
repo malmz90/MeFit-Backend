@@ -19,10 +19,10 @@ public class User {
     @Column(name = "keycloak_id",unique=true)
     private String keyCloakId;
     @Column(name = "is_contributor")
-    private Boolean isContributor;
+    private Boolean contributor;
 
     @Column(name = "is_admin")
-    private Boolean isAdmin;
+    private Boolean admin;
 
 
 }
