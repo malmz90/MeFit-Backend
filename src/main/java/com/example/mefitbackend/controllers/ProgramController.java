@@ -1,9 +1,10 @@
 package com.example.mefitbackend.controllers;
 
-import com.example.mefitbackend.models.Exercise;
 import com.example.mefitbackend.models.Profile;
+import com.example.mefitbackend.models.Program;
 import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.models.Workout;
+import com.example.mefitbackend.services.ProgramService;
 import com.example.mefitbackend.services.WorkoutService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,48 +20,48 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@RequestMapping("api/v1/workouts")
-public class WorkoutController {
+@RequestMapping("api/v1/programs")
+public class ProgramController {
     @Autowired
-    WorkoutService workoutService;
+    ProgramService programService;
     private HttpStatus httpStatus;
 
-    @Operation(summary = "Get all workouts")
+    @Operation(summary = "Get all programs")
     @GetMapping()
-    public List<Workout> getProfiles() {
-        return workoutService.getWorkouts();
+    public List<Program> getPrograms() {
+        return programService.getPrograms();
     }
 
-    @Operation(summary = "Get workout by ID")
+    @Operation(summary = "Get program by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Success",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Workout.class)) }),
+                            schema = @Schema(implementation = Program.class)) }),
             @ApiResponse(responseCode = "404",
-                    description = "Workout does not exist with supplied ID",
+                    description = "Program does not exist with supplied ID",
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Workout> getUser(@PathVariable int id) {
+    public ResponseEntity<Program> getProgram(@PathVariable int id) {
         HttpStatus status;
-        Workout workout = workoutService.getWorkoutById(id);
+        Program program = programService.findProgramById(id);
 
-        if (workout != null) {
+        if (program != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(workout, status);
+            return new ResponseEntity<>(program, status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
         }
     }
 
-    @Operation(summary = "Create a new workout")
+    @Operation(summary = "Create a new program")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
-                    description = "Created workout",
+                    description = "Created program",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Profile.class)) }),
+                            schema = @Schema(implementation = Program.class)) }),
             @ApiResponse(responseCode = "400",
                     description = "Malformed request",
                     content = @Content),
@@ -69,44 +70,44 @@ public class WorkoutController {
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Workout> add(@RequestBody Workout workout) {
+    public ResponseEntity<Program> add(@RequestBody Program program) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
-            workout = workoutService.saveWorkout(workout);
+            program = programService.saveProgram(program);
             httpStatus = HttpStatus.CREATED;
         } catch (Exception e) {
             httpStatus = HttpStatus.BAD_REQUEST;
         }
 
-        return new ResponseEntity<>(workout, httpStatus);
+        return new ResponseEntity<>(program, httpStatus);
     }
 
-    @Operation(summary = "Update an existing workout by ID")
+    @Operation(summary = "Update an existing program by ID")
     @ApiResponses( value = {
             @ApiResponse(responseCode = "204",
-                    description = "Workout successfully updated",
+                    description = "Program successfully updated",
                     content = @Content),
             @ApiResponse(responseCode = "400",
                     description = "Malformed request",
                     content = @Content),
             @ApiResponse(responseCode = "404",
-                    description = "Workout not found with supplied ID",
+                    description = "Program not found with supplied ID",
                     content = @Content)
     })
     @PatchMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Workout workout) {
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Program program) {
 
-        if(id != workout.getWorkout_id()) {
+        if(id != program.getProgram_id()) {
             return ResponseEntity.badRequest().build();
         }
-       workoutService.updateWorkout(workout);
+        programService.updateProgram(program);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Delete workout by ID")
+    @Operation(summary = "Delete program by ID")
     @DeleteMapping("{id}")
     public ResponseEntity<Workout> delete(@PathVariable int id) {
-        workoutService.deleteById(id);
+        programService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

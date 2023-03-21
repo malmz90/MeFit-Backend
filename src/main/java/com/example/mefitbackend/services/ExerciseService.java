@@ -1,7 +1,6 @@
 package com.example.mefitbackend.services;
 
 import com.example.mefitbackend.models.Exercise;
-import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.repositories.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

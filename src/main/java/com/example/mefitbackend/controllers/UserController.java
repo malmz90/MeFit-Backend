@@ -14,12 +14,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -59,6 +64,31 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get user by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Success",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)) }),
+            @ApiResponse(responseCode = "404",
+                    description = "User does not exist with supplied ID",
+                    content = @Content)
+    })
+    @GetMapping("/keycloak")
+    public ResponseEntity<UserGetDTO> findUserByKeyCloakId(@AuthenticationPrincipal Jwt principal) {
+        String keycloakId = principal.getClaimAsString("sub");
+        HttpStatus status;
+        User user = userService.getUserByKeyCloakId(keycloakId);
+        if (user != null) {
+            UserGetDTO userGetDTO = userMapper.userToUserGetDTO(user);
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(userGetDTO, status);
+        } else {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
+    }
+
     @Operation(summary = "Create a new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
@@ -72,7 +102,30 @@ public class UserController {
                     description = "Not Authorized",
                     content = @Content)
     })
-    @PostMapping
+
+    @PostMapping()
+    public ResponseEntity<User> add(@AuthenticationPrincipal Jwt principal) {
+        httpStatus = HttpStatus.FORBIDDEN;
+        try {
+            UserPostDTO userPostDTO = new UserPostDTO();
+            userPostDTO.setUsername(principal.getClaimAsString("preferred_username"));
+            userPostDTO.setKeyCloakId(principal.getClaimAsString("sub"));
+
+            List<String> roles = principal.getClaimAsStringList("roles");
+            userPostDTO.setAdmin(roles.contains("admin"));
+            userPostDTO.setContributor((roles.contains("contributor")));
+
+            User user = userMapper.userPostDTOtoUser(userPostDTO);
+            user = userService.saveUser(user);
+            httpStatus = HttpStatus.CREATED;
+            return new ResponseEntity<>(user, httpStatus);
+        } catch (Exception e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, httpStatus);
+        }
+    }
+
+ /*   @PostMapping
     public ResponseEntity<User> add(@RequestBody UserPostDTO userPostDTO) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
@@ -84,7 +137,7 @@ public class UserController {
             httpStatus = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, httpStatus);
         }
-    }
+    }*/
 
     @Operation(summary = "Update an existing user by ID")
     @ApiResponses( value = {
@@ -117,6 +170,8 @@ public class UserController {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }
 
