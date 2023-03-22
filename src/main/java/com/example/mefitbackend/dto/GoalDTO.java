@@ -2,14 +2,16 @@ package com.example.mefitbackend.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class GoalDTO {
+
     private Long goal_id;
     private String startDate;
     private String endDate;
     private boolean achieved;
-    private ProgramDTO program;
-
+    private List<ProgramDTO> programs;
 
     public Long getGoal_id() {
         return goal_id;
@@ -43,11 +45,12 @@ public class GoalDTO {
         this.achieved = achieved;
     }
 
-    public ProgramDTO getProgram() {
-        return program;
+
+    public List<ProgramDTO> getPrograms() {
+        return programs;
     }
 
-    public void setProgram(ProgramDTO program) {
-        this.program = program;
+    public void setPrograms(List<ProgramDTO> programs) {
+        this.programs = programs;
     }
 }
