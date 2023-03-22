@@ -22,10 +22,9 @@ public class Program {
     @Column
     private String category;
 
-
     @OneToMany(mappedBy = "program")
     @JsonIgnore
-    List<Goal> goal;
+    private List<GoalProgramAssociation> goalProgramAssociations = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

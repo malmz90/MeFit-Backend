@@ -1,9 +1,13 @@
 package com.example.mefitbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,16 +26,12 @@ public class Goal {
     @Column(name = "achieved")
     private boolean achieved;
 
-    @ManyToOne
-    @JoinColumn(name = "program_id")
-    private Program program;
+    @OneToMany(mappedBy = "goal")
+    @JsonIgnore
+    private List<GoalProgramAssociation> goalProgramAssociations = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
-
-  /*  @OneToMany(mappedBy = "workout")
-    List<WorkoutComplete> workoutsCompleted;
-    */
 
 }

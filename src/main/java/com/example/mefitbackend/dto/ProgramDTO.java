@@ -8,6 +8,7 @@ public class ProgramDTO {
     private Long program_id;
     private String name;
     private String category;
+    private boolean completed;
 
 
     public Long getProgram_id() {
@@ -32,5 +33,13 @@ public class ProgramDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
