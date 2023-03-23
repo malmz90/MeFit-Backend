@@ -1,5 +1,8 @@
 package com.example.mefitbackend.controllers;
 
+import com.example.mefitbackend.dto.WorkoutDTO;
+import com.example.mefitbackend.dto.WorkoutWithExercisesDTO;
+import com.example.mefitbackend.mappers.WorkoutMapper;
 import com.example.mefitbackend.models.Exercise;
 import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.User;
@@ -23,6 +26,9 @@ import java.util.List;
 public class WorkoutController {
     @Autowired
     WorkoutService workoutService;
+
+    @Autowired
+    WorkoutMapper workoutMapper;
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all workouts")
@@ -55,7 +61,7 @@ public class WorkoutController {
         }
     }
 
-    @Operation(summary = "Create a new workout")
+  /*  @Operation(summary = "Create a new workout")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Created workout",
@@ -79,6 +85,30 @@ public class WorkoutController {
         }
 
         return new ResponseEntity<>(workout, httpStatus);
+    }*/
+
+    @PostMapping
+    public ResponseEntity<WorkoutDTO> add(@RequestBody WorkoutWithExercisesDTO workoutWithExercisesDTO) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        Workout workout = new Workout();
+        workout.setName(workoutWithExercisesDTO.getName());
+        workout.setType(workoutWithExercisesDTO.getType());
+
+        try {
+            workout = workoutService.saveWorkout(workout);
+            List<Integer> exerciseIds = workoutWithExercisesDTO.getExerciseIds();
+
+            if (exerciseIds != null && !exerciseIds.isEmpty()) {
+                workout = workoutService.linkWorkoutWithExercises(workout.getWorkout_id(), exerciseIds);
+            }
+
+            httpStatus = HttpStatus.CREATED;
+        } catch (Exception e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+
+        WorkoutDTO workoutDTO = workoutMapper.toDTO(workout);
+        return new ResponseEntity<>(workoutDTO, httpStatus);
     }
 
     @Operation(summary = "Update an existing workout by ID")
