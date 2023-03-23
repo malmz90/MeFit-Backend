@@ -110,6 +110,9 @@ public class UserController {
             UserPostDTO userPostDTO = new UserPostDTO();
             userPostDTO.setUsername(principal.getClaimAsString("preferred_username"));
             userPostDTO.setKeyCloakId(principal.getClaimAsString("sub"));
+            userPostDTO.setFirstName(principal.getClaimAsString("given_name"));
+            userPostDTO.setLastName(principal.getClaimAsString("family_name"));
+            userPostDTO.setEmail(principal.getClaimAsString("email"));
 
             List<String> roles = principal.getClaimAsStringList("roles");
             userPostDTO.setAdmin(roles.contains("admin"));
