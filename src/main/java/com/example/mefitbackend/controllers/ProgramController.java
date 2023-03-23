@@ -1,5 +1,8 @@
 package com.example.mefitbackend.controllers;
 
+import com.example.mefitbackend.dto.ProgramDTO;
+import com.example.mefitbackend.dto.ProgramWithWorkoutsDTO;
+import com.example.mefitbackend.mappers.ProgramMapper;
 import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.Program;
 import com.example.mefitbackend.models.User;
@@ -24,6 +27,9 @@ import java.util.List;
 public class ProgramController {
     @Autowired
     ProgramService programService;
+
+    @Autowired
+    ProgramMapper programMapper;
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all programs")
@@ -70,6 +76,29 @@ public class ProgramController {
                     content = @Content)
     })
     @PostMapping
+    public ResponseEntity<ProgramDTO> add(@RequestBody ProgramWithWorkoutsDTO programWithWorkoutsDTO) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        Program program = new Program();
+        program.setName(programWithWorkoutsDTO.getName());
+        program.setCategory(programWithWorkoutsDTO.getCategory());
+
+        try {
+            program = programService.saveProgram(program);
+            List<Integer> workoutIds = programWithWorkoutsDTO.getWorkoutIds();
+
+            if (workoutIds != null && !workoutIds.isEmpty()) {
+                program = programService.linkProgramWithWorkouts(program.getProgram_id(), workoutIds);
+            }
+
+            httpStatus = HttpStatus.CREATED;
+        } catch (Exception e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+
+        ProgramDTO programDTO = programMapper.toProgramDto(program);
+        return new ResponseEntity<>(programDTO, httpStatus);
+    }
+ /*   @PostMapping
     public ResponseEntity<Program> add(@RequestBody Program program) {
         httpStatus = HttpStatus.FORBIDDEN;
         try {
@@ -80,7 +109,7 @@ public class ProgramController {
         }
 
         return new ResponseEntity<>(program, httpStatus);
-    }
+    }*/
 
     @Operation(summary = "Update an existing program by ID")
     @ApiResponses( value = {
