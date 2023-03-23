@@ -1,4 +1,4 @@
-INSERT INTO "user" ( is_admin, is_contributor,username) VALUES (TRUE,FALSE,'Malmz');
+INSERT INTO "user" ( is_admin, is_contributor,username, first_name, last_name, email) VALUES (TRUE,FALSE,'Malmz','Alexander','Malmqvist', 'malmz@experis.se');
 INSERT INTO "user" ( is_admin, is_contributor,username) VALUES (FALSE,FALSE,'Bert');
 
 INSERT INTO profile (disabilities,height,medical_conditions,weight,user_id) VALUES ('one_leg',160,'none',50,1);

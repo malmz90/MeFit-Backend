@@ -16,6 +16,12 @@ public class User {
 
     @Column private String username;
 
+    @Column private String firstName;
+
+    @Column private String lastName;
+
+    @Column private String email;
+
     @Column(name = "keycloak_id",unique=true)
     private String keyCloakId;
     @Column(name = "is_contributor")

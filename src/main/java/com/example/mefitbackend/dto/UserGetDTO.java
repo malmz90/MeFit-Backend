@@ -1,11 +1,20 @@
 package com.example.mefitbackend.dto;
 
+import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
 public class UserGetDTO {
     private int user_id;
     private String username;
+    private String firstName;
+
+    private String lastName;
+
+     private String email;
+    private Boolean contributor;
+    private Boolean admin;
+
 
     public Boolean getContributor() {
         return contributor;
@@ -23,10 +32,6 @@ public class UserGetDTO {
         this.admin = admin;
     }
 
-    private Boolean contributor;
-    private Boolean admin;
-
-
     public int getUser_id() {
         return user_id;
     }
@@ -43,6 +48,27 @@ public class UserGetDTO {
         this.username = username;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
