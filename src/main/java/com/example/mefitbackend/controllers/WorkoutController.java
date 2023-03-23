@@ -48,7 +48,7 @@ public class WorkoutController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Workout> getUser(@PathVariable int id) {
+    public ResponseEntity<Workout> getWorkout(@PathVariable int id) {
         HttpStatus status;
         Workout workout = workoutService.getWorkoutById(id);
 
