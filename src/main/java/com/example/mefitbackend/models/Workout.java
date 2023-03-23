@@ -37,7 +37,5 @@ public class Workout {
     )
 
     public List<Exercise> exercises = new ArrayList<>();
-/* @OneToMany(mappedBy = "workout")
- List<WorkoutComplete> workoutsCompleted;*/
-    
+
 }
