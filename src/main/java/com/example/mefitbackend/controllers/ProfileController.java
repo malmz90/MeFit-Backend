@@ -102,13 +102,26 @@ public class ProfileController {
                     content = @Content)
     })
     @PatchMapping("{id}")
-    public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable int id) {
-        if(id != profile.getProfile_id())
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<Profile> updateProfile(@RequestBody Profile updatedProfile, @PathVariable int id) {
+        Profile profile = profileService.getProfileById(id);
+        if (profile == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (updatedProfile.getWeight() != null) {
+            profile.setWeight(updatedProfile.getWeight());
+        }
+        if (updatedProfile.getHeight() != null) {
+            profile.setHeight(updatedProfile.getHeight());
+        }
+        if (updatedProfile.getMedicalConditions() != null) {
+            profile.setMedicalConditions(updatedProfile.getMedicalConditions());
+        }
+        if (updatedProfile.getDisabilities() != null) {
+            profile.setDisabilities(updatedProfile.getDisabilities());
+        }
         profileService.updateProfile(profile);
         return ResponseEntity.noContent().build();
     }
-
     @Operation(summary = "Delete a profile by ID")
     @DeleteMapping("{id}")
     public ResponseEntity<Profile> deleteProfile(@PathVariable int id) {

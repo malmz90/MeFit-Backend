@@ -11,18 +11,18 @@ import java.util.List;
 @Setter
 public class ProfileGetDTO {
 
-    private Long profile_id;
-    private int weight;
-    private int height;
+    private int profile_id;
+    private Integer weight;
+    private Integer height;
     private String medicalConditions;
     private String disabilities;
     private int user;
     private List<GoalDTO> goals;
-    public Long getProfile_id() {
+    public int getProfile_id() {
         return profile_id;
     }
 
-    public void setProfile_id(Long profile_id) {
+    public void setProfile_id(int profile_id) {
         this.profile_id = profile_id;
     }
 
@@ -30,7 +30,7 @@ public class ProfileGetDTO {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
@@ -38,7 +38,7 @@ public class ProfileGetDTO {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
