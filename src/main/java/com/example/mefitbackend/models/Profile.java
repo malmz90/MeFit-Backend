@@ -14,12 +14,12 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long profile_id;
+    private int profile_id;
 
     @Column
-    private int weight;
+    private Integer weight;
     @Column
-    private int height;
+    private Integer height;
 
     @Column
     private String medicalConditions;
@@ -29,10 +29,6 @@ public class Profile {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
- /*   @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;*/
 
    @OneToMany(mappedBy = "profile")
    List<Goal> goals;
