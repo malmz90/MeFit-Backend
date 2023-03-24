@@ -14,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("api/v1/goal")
 public class GoalController {
 
@@ -55,6 +57,25 @@ public class GoalController {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
         }
+    }
+
+    @GetMapping("list")
+    public ResponseEntity<List<GoalDTO>> getGoalsByIds(@RequestParam("ids") List<Integer> ids) {
+        List<GoalDTO> goalDTOs = new ArrayList<>();
+        HttpStatus status = HttpStatus.OK;
+
+        for (int id : ids) {
+            Goal goal = goalService.findGoalById(id);
+            if (goal != null) {
+                GoalDTO goalDto = goalMapper.toGoalDto(goal);
+                goalDTOs.add(goalDto);
+            }
+        }
+
+        if (goalDTOs.isEmpty()) {
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<>(goalDTOs, status);
     }
 
 
