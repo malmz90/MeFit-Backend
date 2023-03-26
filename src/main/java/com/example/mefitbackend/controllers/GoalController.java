@@ -1,9 +1,16 @@
 package com.example.mefitbackend.controllers;
 
 import com.example.mefitbackend.dto.GoalDTO;
+import com.example.mefitbackend.dto.ProgramDTO;
 import com.example.mefitbackend.mappers.GoalMapper;
 import com.example.mefitbackend.models.Goal;
+import com.example.mefitbackend.models.GoalProgramAssociation;
+import com.example.mefitbackend.models.Profile;
+import com.example.mefitbackend.models.Program;
+import com.example.mefitbackend.repositories.GoalProgramAssociationRepository;
 import com.example.mefitbackend.services.GoalService;
+import com.example.mefitbackend.services.ProfileService;
+import com.example.mefitbackend.services.ProgramService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,6 +33,13 @@ public class GoalController {
     private GoalService goalService;
     @Autowired
     private GoalMapper goalMapper;
+
+    @Autowired
+    private ProgramService programService;
+    @Autowired
+    ProfileService profileService;
+    @Autowired
+    GoalProgramAssociationRepository goalProgramAssociationRepository;
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all goals")
@@ -98,20 +112,45 @@ public class GoalController {
         HttpStatus status;
         Goal goal = goalMapper.toGoal(goalDto);
 
-        if (goal != null) {
-            try {
-                goal = goalService.saveGoal(goal);
-                status = HttpStatus.CREATED;
-                GoalDTO responseDto = goalMapper.toGoalDto(goal);
-                return new ResponseEntity<>(responseDto, status);
-            } catch (Exception e) {
-                status = HttpStatus.BAD_REQUEST;
-            }
-        } else {
+        Profile profile = profileService.getProfileById(Math.toIntExact(goalDto.getProfile_id()));
+        if (profile == null) {
             status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, status);
         }
 
-        return new ResponseEntity<>(null, status);
+        goal.setProfile(profile);
+
+        List<GoalProgramAssociation> associations = new ArrayList<>();
+
+        for (ProgramDTO programDto : goalDto.getPrograms()) {
+            Program program = programService.findProgramById(Math.toIntExact(programDto.getProgram_id()));
+            if (program == null) {
+                status = HttpStatus.BAD_REQUEST;
+                return new ResponseEntity<>(null, status);
+            }
+            GoalProgramAssociation association = new GoalProgramAssociation();
+            association.setProgram(program);
+            association.setGoal(goal);
+            association.setCompleted(programDto.isCompleted());
+            associations.add(association);
+        }
+
+        goal.setGoalProgramAssociations(associations);
+        goal = goalService.saveGoal(goal);
+
+        if (goal != null) {
+            // Save the associations to the goal_program_association table
+            for (GoalProgramAssociation association : associations) {
+                association = goalProgramAssociationRepository.save(association);
+            }
+
+            status = HttpStatus.CREATED;
+            GoalDTO responseDto = goalMapper.toGoalDto(goal);
+            return new ResponseEntity<>(responseDto, status);
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, status);
+        }
     }
 
     @Operation(summary = "Update an existing goal by ID")

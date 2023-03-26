@@ -24,6 +24,7 @@ public interface GoalMapper {
     @Mapping(target = "endDate", source = "goal.endDate")
     @Mapping(target = "achieved", source = "goal.achieved")
     @Mapping(target = "programs", source = "goal.goalProgramAssociations")
+    @Mapping(target = "profile_id", source = "goal.profile.profile_id")
     GoalDTO toGoalDto(Goal goal);
 
     @AfterMapping
