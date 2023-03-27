@@ -13,6 +13,8 @@ public class GoalDTO {
     private boolean achieved;
     private List<ProgramDTO> programs;
     private Long profile_id;
+    private int totalPrograms;
+    private int completedPrograms;
 
     public Long getGoal_id() {
         return goal_id;
@@ -61,5 +63,21 @@ public class GoalDTO {
 
     public void setProfile_id(Long profile_id) {
         this.profile_id = profile_id;
+    }
+
+    public int getTotalPrograms() {
+        return totalPrograms;
+    }
+
+    public void setTotalPrograms(int totalPrograms) {
+        this.totalPrograms = totalPrograms;
+    }
+
+    public int getCompletedPrograms() {
+        return completedPrograms;
+    }
+
+    public void setCompletedPrograms(int completedPrograms) {
+        this.completedPrograms = completedPrograms;
     }
 }

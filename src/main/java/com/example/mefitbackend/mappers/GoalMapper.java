@@ -30,12 +30,25 @@ public interface GoalMapper {
     @AfterMapping
     default void mapPrograms(@MappingTarget GoalDTO goalDto, Goal goal) {
         List<ProgramDTO> programDtos = new ArrayList<>();
+        int totalPrograms = 0;
+        int completedPrograms = 0;
+
         for (GoalProgramAssociation association : goal.getGoalProgramAssociations()) {
             ProgramDTO programDto = association.getProgram() != null ?
                     programMapper.toProgramDtoWithAssociation(association.getProgram(), association) : null;
             programDtos.add(programDto);
+
+            if (programDto != null) {
+                totalPrograms++;
+                if (programDto.isCompleted()) {
+                    completedPrograms++;
+                }
+            }
         }
+
         goalDto.setPrograms(programDtos);
+        goalDto.setTotalPrograms(totalPrograms);
+        goalDto.setCompletedPrograms(completedPrograms);
     }
 
     Goal toGoal(GoalDTO goalDTO);
