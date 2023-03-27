@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@RequestMapping("api/v1/goal")
+@RequestMapping("api/v1/goals")
 public class GoalController {
 
     @Autowired
@@ -43,7 +43,7 @@ public class GoalController {
     private HttpStatus httpStatus;
 
     @Operation(summary = "Get all goals")
-    @GetMapping("goals")
+    @GetMapping()
     public List<Goal> getGoals() {
         return goalService.getGoals();
     }
