@@ -155,17 +155,32 @@ public class UserController {
                     content = @Content)
     })
     @PatchMapping("{id}")
-    public ResponseEntity<UserGetDTO> updateUser(@PathVariable int id, @RequestBody UserPostDTO userPostDTO) {
+    public ResponseEntity<UserGetDTO> updateUser(@PathVariable int id, @RequestBody Map<String, Object> partialUpdate) {
         User existingUser = userService.getUserById(id);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
         }
-        User updatedUser = userMapper.userPostDTOtoUser(userPostDTO);
-        updatedUser.setUser_id(id);
-        updatedUser = userService.updateUser(updatedUser);
+        if (partialUpdate.containsKey("username")) {
+            existingUser.setUsername((String) partialUpdate.get("username"));
+        }
+        if (partialUpdate.containsKey("email")) {
+            existingUser.setEmail((String) partialUpdate.get("email"));
+        }
+        if (partialUpdate.containsKey("admin")) {
+            existingUser.setAdmin((boolean) partialUpdate.get("admin"));
+        }
+        if (partialUpdate.containsKey("contributor")) {
+            existingUser.setContributor((boolean) partialUpdate.get("contributor"));
+        }
+
+        User updatedUser = userService.updateUser(existingUser);
         UserGetDTO updatedUserDTO = userMapper.userToUserGetDTO(updatedUser);
         return ResponseEntity.ok(updatedUserDTO);
     }
+
+
+
+
 
     @Operation(summary = "Delete an user by ID")
     @DeleteMapping("{id}")
