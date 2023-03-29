@@ -184,7 +184,7 @@ public class UserController {
 
     @Operation(summary = "Delete an user by ID")
     @DeleteMapping("{id}")
-    public ResponseEntity<User> delete(@PathVariable int id) {
+    public ResponseEntity<User> delete(@PathVariable Integer id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

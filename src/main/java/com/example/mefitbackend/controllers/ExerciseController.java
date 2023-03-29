@@ -1,6 +1,7 @@
 package com.example.mefitbackend.controllers;
 
 import com.example.mefitbackend.models.Exercise;
+import com.example.mefitbackend.models.Profile;
 import com.example.mefitbackend.models.User;
 import com.example.mefitbackend.services.ExerciseService;
 import com.example.mefitbackend.services.UserService;
@@ -93,10 +94,17 @@ public class ExerciseController {
                     content = @Content)
     })
     @PatchMapping("{id}")
-    public ResponseEntity<Exercise> updateUser(@PathVariable int id, @RequestBody Exercise exercise) {
+    public ResponseEntity<Exercise> updateUser(@PathVariable int id, @RequestBody Exercise updatedExercise) {
+        Exercise exercise = exerciseService.getExerciseById(id);
 
-        if(id != exercise.getExercise_id()) {
+        if(exercise==null) {
             return ResponseEntity.badRequest().build();
+        }
+        if (updatedExercise.getName() != null) {
+            exercise.setName(updatedExercise.getName());
+        }
+        if (updatedExercise.getDescription() != null) {
+            exercise.setDescription(updatedExercise.getDescription());
         }
         exerciseService.updateExercise(exercise);
         return ResponseEntity.noContent().build();

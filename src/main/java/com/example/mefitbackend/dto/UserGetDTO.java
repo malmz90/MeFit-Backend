@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UserGetDTO {
-    private int user_id;
+    private Integer user_id;
     private String username;
     private String firstName;
 
@@ -36,7 +36,7 @@ public class UserGetDTO {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
