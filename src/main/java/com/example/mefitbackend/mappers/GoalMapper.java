@@ -18,7 +18,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = ProgramMapper.class)
 public interface GoalMapper {
 
-    ProgramMapper programMapper = Mappers.getMapper(ProgramMapper.class);
     @Mapping(target = "goal_id", source = "goal.goal_id")
     @Mapping(target = "startDate", source = "goal.startDate")
     @Mapping(target = "endDate", source = "goal.endDate")
@@ -29,6 +28,7 @@ public interface GoalMapper {
 
     @AfterMapping
     default void mapPrograms(@MappingTarget GoalDTO goalDto, Goal goal) {
+        ProgramMapper programMapper = Mappers.getMapper(ProgramMapper.class);
         List<ProgramDTO> programDtos = new ArrayList<>();
         int totalPrograms = 0;
         int completedPrograms = 0;
