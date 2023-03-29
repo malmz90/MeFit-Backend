@@ -7,8 +7,8 @@ INSERT INTO profile (disabilities,height,medical_conditions,weight,user_id) VALU
 INSERT INTO program (category,name) VALUES ('Muscle Building','Big Biceps');
 INSERT INTO program (category,name) VALUES ('Cardio and Muscle building','Run Forest and get strong');
 
-INSERT INTO goal (achieved,end_date,start_date,profile_id) VALUES (TRUE,'February','Mars',1);
-INSERT INTO goal (achieved,end_date,start_date,profile_id) VALUES (TRUE,'June','October',2);
+INSERT INTO goal (achieved,end_date,start_date,profile_id) VALUES (FALSE,'February','Mars',1);
+INSERT INTO goal (achieved,end_date,start_date,profile_id) VALUES (FALSE,'June','October',2);
 
 INSERT INTO goal_program_association(completed,goal_id,program_id) VALUES (true,1,1);
 INSERT INTO goal_program_association(completed,goal_id,program_id) VALUES (false,2,1);

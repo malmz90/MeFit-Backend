@@ -167,10 +167,12 @@ public class GoalController {
     })
     @PatchMapping("{id}")
     public ResponseEntity<Goal> updateGoal(@RequestBody Goal goal, @PathVariable int id) {
-        if(id != goal.getGoal_id())
+        if (id != goal.getGoal_id()) {
             return ResponseEntity.badRequest().build();
-        goalService.updateGoal(goal);
-        return ResponseEntity.noContent().build();
+        }
+
+        Goal updatedGoal = goalService.updateGoal(goal);
+        return ResponseEntity.ok(updatedGoal);
     }
 
     @Operation(summary = "Delete goal by ID")

@@ -16,6 +16,7 @@ public class GoalDTO {
     private int totalPrograms;
     private int completedPrograms;
 
+
     public Long getGoal_id() {
         return goal_id;
     }

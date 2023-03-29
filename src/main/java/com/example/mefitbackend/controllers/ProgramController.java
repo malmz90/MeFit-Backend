@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
@@ -34,8 +35,9 @@ public class ProgramController {
 
     @Operation(summary = "Get all programs")
     @GetMapping()
-    public List<Program> getPrograms() {
-        return programService.getPrograms();
+    public List<ProgramDTO> getPrograms() {
+        List<Program> programs = programService.getPrograms();
+        return programs.stream().map(programMapper::toProgramDto).collect(Collectors.toList());
     }
 
     @Operation(summary = "Get program by ID")

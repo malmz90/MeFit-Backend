@@ -2,13 +2,15 @@ package com.example.mefitbackend.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProgramDTO {
-
     private Long program_id;
     private String name;
     private String category;
     private boolean completed;
+    private List<WorkoutDTO> workouts;
 
 
     public Long getProgram_id() {
