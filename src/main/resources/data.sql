@@ -20,7 +20,7 @@ INSERT INTO workout (name,type) VALUES ('Full body workout','Full body');
 INSERT INTO workout (name,type) VALUES ('Cardio','Legs');
 
 
-INSERT INTO program_workout (workout_id, program_id) VALUES (1,2);
+INSERT INTO program_workout (workout_id, program_id) VALUES (2,1);
 INSERT INTO program_workout (workout_id, program_id) VALUES (2,2);
 INSERT INTO program_workout (workout_id, program_id) VALUES (4,2);
 
